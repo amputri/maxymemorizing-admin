@@ -4,6 +4,7 @@ import Beranda from './pages/Beranda';
 import Surah from './pages/Surah';
 import Ayat from './pages/Ayat';
 import User from './pages/User';
+import Profile from './pages/Profile';
 
 const Content = () => {
     const { isi } = useParams();
@@ -21,6 +22,9 @@ const Content = () => {
     }
     if (isi === 'user') {
         tampil = <User />
+    }
+    if (isi === 'profile') {
+        tampil = <Profile />
     }
 
     return (

@@ -6,7 +6,7 @@ import Side from './layouts/Side';
 import {Redirect} from 'react-router-dom';
 
 const Back = () => {
-    if ((sessionStorage.getItem('token') === 'undefined') || (sessionStorage.getItem('token') === 'null')) {
+    if (sessionStorage.getItem('token') === null) {
         return <Redirect to='/login' />
     }
 
