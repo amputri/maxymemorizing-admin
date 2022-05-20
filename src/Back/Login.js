@@ -34,7 +34,7 @@ const Login = () => {
                 <div className="mx-auto col-4">
                     <form onSubmit={handleSubmit(login)}>
                         <div className="form-group">
-                            <label htmlFor="exampleInputEmail1">Username</label>
+                            <label htmlFor="exampleInputEmail1">Usernamee</label>
                             <input type="text" className="form-control" name="username" aria-describedby="emailHelp" placeholder="Enter email" {...register("username", { required: true })} />
                         </div>
                         <div className="form-group">
