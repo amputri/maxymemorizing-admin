@@ -20,7 +20,7 @@ const Login = () => {
 
         reset()
 
-        if (getToken() != 'undefined') {
+        if (getToken() !== 'undefined') {
             history.push('/admin')
             window.location.reload()
         }
@@ -34,12 +34,12 @@ const Login = () => {
                 <div className="mx-auto col-4">
                     <form onSubmit={handleSubmit(login)}>
                         <div className="form-group">
-                            <label htmlFor="exampleInputEmail1">Usernamee</label>
-                            <input type="text" className="form-control" name="username" aria-describedby="emailHelp" placeholder="Enter email" {...register("username", { required: true })} />
+                            <label htmlFor="username">Username</label>
+                            <input type="text" className="form-control" name="username" {...register("username", { required: true })} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="exampleInputPassword1">Password</label>
-                            <input type="password" className="form-control" name="password" placeholder="Password" {...register("password", { required: true })} />
+                            <label htmlFor="password">Password</label>
+                            <input type="password" className="form-control" name="password" {...register("password", { required: true })} />
                         </div>
                         <button type="submit" className="btn btn-primary">Login</button>
                     </form>

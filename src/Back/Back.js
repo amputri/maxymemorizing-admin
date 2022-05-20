@@ -1,8 +1,8 @@
 import React from 'react';
-import Footer from './pages/Footer';
-import Main from './pages/Main';
-import Nav from './pages/Nav';
-import Side from './pages/Side';
+import Footer from './layouts/Footer';
+import Main from './layouts/Main';
+import Nav from './layouts/Nav';
+import Side from './layouts/Side';
 import {Redirect} from 'react-router-dom';
 
 const Back = () => {
