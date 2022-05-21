@@ -1,9 +1,9 @@
-import React from 'react';
-import Footer from './layouts/Footer';
-import Main from './layouts/Main';
-import Nav from './layouts/Nav';
-import Side from './layouts/Side';
-import {Redirect} from 'react-router-dom';
+import React from 'react'
+import Footer from './layouts/Footer'
+import Main from './layouts/Main'
+import Nav from './layouts/Nav'
+import Side from './layouts/Side'
+import {Redirect} from 'react-router-dom'
 
 const Back = () => {
     if (sessionStorage.getItem('token') === null) {
@@ -31,7 +31,7 @@ const Back = () => {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default Back;
+export default Back

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Beranda = () => {
     return (
@@ -11,7 +11,7 @@ const Beranda = () => {
                 <p>pesan</p>
             </div>
         </div>
-    );
+    )
 }
 
-export default Beranda;
+export default Beranda

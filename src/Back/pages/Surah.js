@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Surah = () => {
     return (
@@ -11,7 +11,7 @@ const Surah = () => {
                 <p>pesan</p>
             </div>
         </div>
-    );
+    )
 }
 
-export default Surah;
+export default Surah

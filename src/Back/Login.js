@@ -1,10 +1,10 @@
-import React from 'react';
-import { link } from '../Axios/link';
-import { useForm } from 'react-hook-form';
-import {useHistory} from 'react-router-dom';
+import React from 'react'
+import { link } from '../Axios/link'
+import { useForm } from 'react-hook-form'
+import {useHistory} from 'react-router-dom'
 
 const Login = () => {
-    const { register, handleSubmit, reset } = useForm();
+    const { register, handleSubmit, reset } = useForm()
 
     const history = useHistory()
 
@@ -47,7 +47,7 @@ const Login = () => {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default Login;
+export default Login

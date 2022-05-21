@@ -1,15 +1,15 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import Beranda from './pages/Beranda';
-import Surah from './pages/Surah';
-import Ayat from './pages/Ayat';
-import User from './pages/User';
-import Profile from './pages/Profile';
+import React from 'react'
+import { useParams } from 'react-router-dom'
+import Beranda from './pages/Beranda'
+import Surah from './pages/Surah'
+import Ayat from './pages/Ayat'
+import User from './pages/User'
+import Profile from './pages/Profile'
 
 const Content = () => {
-    const { isi } = useParams();
+    const { isi } = useParams()
 
-    let tampil;
+    let tampil
 
     if (isi === 'beranda') {
         tampil = <Beranda />
@@ -31,7 +31,7 @@ const Content = () => {
         <>
             {tampil}
         </>
-    );
+    )
 }
 
-export default Content;
+export default Content

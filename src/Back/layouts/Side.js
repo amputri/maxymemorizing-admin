@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import React from 'react'
+import { Link, useRouteMatch } from 'react-router-dom'
 
 const Side = () => {
-    const { url } = useRouteMatch();
+    const { url } = useRouteMatch()
 
     return (
         <div>
@@ -18,7 +18,7 @@ const Side = () => {
                 </ul>
             </div>
         </div>
-    );
+    )
 }
 
-export default Side;
+export default Side

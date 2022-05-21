@@ -1,20 +1,12 @@
-import React, { useState } from 'react';
-import Useget from '../../Hook/useGet';
-import Modal from 'react-modal';
-import { useForm } from 'react-hook-form';
-import { link } from '../../Axios/link';
+import React from 'react'
+import Useget from '../../Hook/useGet'
+import { useForm } from 'react-hook-form'
+import { link } from '../../Axios/link'
 
 const User = () => {
     const [isi] = Useget('admin/' + sessionStorage.getItem('id'))
-
+    const { register, handleSubmit, formState: { errors } } = useForm()
     let no = 1
-
-    const [mopen, setMopen] = useState(false);
-    const { register, handleSubmit, formState: { errors } } = useForm();
-
-    function tambah() {
-        setMopen(true)
-    }
 
     async function simpan(data) {
         let user = {
@@ -25,83 +17,78 @@ const User = () => {
         }
 
         const res = await link.post('/admin', user)
-        setMopen(false)
     }
 
-    async function statuss(id) {
-        const data = isi.filter((val)=>val.id === id)
-
-        let stat = 0
-        if (data[0].status === 1) {
-            stat = 0
-        } else {
-            stat = 1
-        }
-
-        let kirim = {
-            status: stat,
+    async function ubahStatus(id, status) {
+        let user = {
+            status: status,
             id: id,
             id_session: sessionStorage.getItem('id')
         }
 
-        const res = await link.put('/admin/status/', kirim)
+        const res = await link.put('/admin/status/', user)
+    }
+
+    async function ubahLevel(id, level) {
+        let user = {
+            level: level,
+            id: id,
+            id_session: sessionStorage.getItem('id')
+        }
+
+        const res = await link.put('/admin/level/', user)
+    }
+
+    async function resetPassword(id) {
+        let user = {
+            id: id,
+            id_session: sessionStorage.getItem('id')
+        }
+
+        const res = await link.put('/admin/reset-password/', user)
+    }
+
+    async function hapus(id) {
+        const res = await link.delete('/admin/' + id)
     }
 
     return (
         <div>
-            <Modal ariaHideApp={false} isOpen={mopen} onRequestClose={() => setMopen(false)} style={
-                {
-                    overlay: {
-                        background: 'transparent !important'
-                    },
-                    content: {
-                        top: '50%',
-                        left: '50%',
-                        right: 'auto',
-                        bottom: 'auto',
-                        marginRight: '-50%',
-                        transform: 'translate(-50%, -50%)',
-                        width: '40%'
-                    }
-                }
-            }>
-                <div className="row">
-                    <div className='ml-2'>
-                        <h2>Input Data User</h2>
+            <div className="accordion" id="accordionExample">
+                <div className="accordion-item">
+                    <h2 className="accordion-header" id="headingOne">
+                        <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Input Data User
+                        </button>
+                    </h2>
+                    <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div className="accordion-body">
+                            <form onSubmit={handleSubmit(simpan)}>
+                                <div className="mb-3">
+                                    <label htmlFor="nama" className="form-label">nama</label>
+                                    <input type="text" className="form-control" id="nama" {...register("nama", { required: true })} />
+                                    {errors.nama && <span>nama harus diisi</span>}
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="username" className="form-label">username</label>
+                                    <input type="text" className="form-control" id="username" {...register("username", { required: true })} />
+                                    <label htmlFor="level">Level</label>
+                                    <select className="form-control" name="level" id="level" {...register("level", { required: true })}>
+                                        <option value="1">Administrator</option>
+                                        <option value="2">Moderator</option>
+                                    </select>
+                                </div>
+                                <div className="mb-3">
+                                    <input type="submit" className="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-                <div className="row">
-                    <div className='ml-2 col'>
-                        <form onSubmit={handleSubmit(simpan)}>
-                            <div className="mb-3">
-                                <label htmlFor="nama" className="form-label">nama</label>
-                                <input type="text" className="form-control" id="nama" {...register("nama", { required: true })} />
-                                {errors.nama && <span>nama harus diisi</span>}
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="username" className="form-label">username</label>
-                                <input type="text" className="form-control" id="username" {...register("username", { required: true })} />
-                                <label htmlFor="level">Level</label>
-                                <select className="form-control" name="level" id="level" {...register("level", { required: true })}>
-                                    <option value="1">Administrator</option>
-                                    <option value="2">Moderator</option>
-                                </select>
-                            </div>
-                            <div className="mb-3">
-                                <input type="submit" className="btn btn-primary" />
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </Modal>
-            <div className="row">
-                <div>
-                    <h2>Menu User</h2>
                 </div>
             </div>
             <div className="row">
                 <div>
-                    <input onClick={() => (tambah())} className="btn btn-primary" type="submit" value="Tambah" />
+                    <h2>Menu User</h2>
                 </div>
             </div>
             <div className="row">
@@ -114,6 +101,8 @@ const User = () => {
                                 <th>Username</th>
                                 <th>Level</th>
                                 <th>Status</th>
+                                <th>Reset Password</th>
+                                <th>Hapus</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -123,10 +112,16 @@ const User = () => {
                                     <td>{val.nama}</td>
                                     <td>{val.username}</td>
                                     <td>{
-                                        val.level === 1 ? <span>Administrator</span> : <span>Moderator</span>
+                                        val.level === 1 ? <input onClick={() => ubahLevel(val.id, 2)} className="btn btn-success" type="submit" value="ADMINISTRATOR" /> : <input onClick={() => ubahStatus(val.id, 1)} className="btn btn-danger" type="submit" value="MODERATOR" />
                                     }</td>
                                     <td>{
-                                        val.status === 1 ? <input onClick={()=>statuss(val.id)} className="btn btn-success" type="submit" value="AKTIF" /> : <input onClick={()=>statuss(val.id)} className="btn btn-danger" type="submit" value="BANNED" />
+                                        val.status === 1 ? <input onClick={() => ubahStatus(val.id, 0)} className="btn btn-success" type="submit" value="AKTIF" /> : <input onClick={() => ubahStatus(val.id, 1)} className="btn btn-danger" type="submit" value="BANNED" />
+                                    }</td>
+                                    <td>{
+                                        <input onClick={() => resetPassword(val.id)} className="btn btn-warning" type="submit" value="RESET" />
+                                    }</td>
+                                    <td>{
+                                        <input onClick={() => hapus(val.id)} className="btn btn-danger" type="submit" value="HAPUS" />
                                     }</td>
                                 </tr>
                             ))}
@@ -135,7 +130,7 @@ const User = () => {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default User;
+export default User

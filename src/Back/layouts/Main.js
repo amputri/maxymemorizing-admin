@@ -1,9 +1,9 @@
-import React from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
-import Content from '../Content';
+import React from 'react'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import Content from '../Content'
 
 const Main = () => {
-    const { path } = useRouteMatch();
+    const { path } = useRouteMatch()
 
     return (
         <div>
@@ -13,7 +13,7 @@ const Main = () => {
                 </Route>
             </Switch>
         </div>
-    );
+    )
 }
 
-export default Main;
+export default Main

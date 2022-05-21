@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link, useHistory, useRouteMatch } from 'react-router-dom';
+import React from 'react'
+import { Link, useHistory, useRouteMatch } from 'react-router-dom'
 
 const Nav = () => {
     const history = useHistory()
-    const { url } = useRouteMatch();
+    const { url } = useRouteMatch()
 
     function hapus() {
         sessionStorage.clear()
@@ -23,7 +23,7 @@ const Nav = () => {
             </nav>
 
         </div>
-    );
+    )
 }
 
-export default Nav;
+export default Nav

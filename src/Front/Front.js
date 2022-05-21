@@ -1,8 +1,8 @@
-import React from 'react';
-import Footer from './layouts/Footer';
-import Main from './layouts/Main';
-import Nav from './layouts/Nav';
-import Side from './layouts/Side';
+import React from 'react'
+import Footer from './layouts/Footer'
+import Main from './layouts/Main'
+import Nav from './layouts/Nav'
+import Side from './layouts/Side'
 
 const Front = () => {
     return (
@@ -26,7 +26,7 @@ const Front = () => {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default Front;
+export default Front

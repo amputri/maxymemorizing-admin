@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { link } from '../Axios/link';
+import { useState, useEffect } from 'react'
+import { link } from '../Axios/link'
 
 const Useget = (url) => {
-    const [isi, setIsi] = useState([]);
+    const [isi, setIsi] = useState([])
 
     useEffect(() => {
         let ambil = true
@@ -18,10 +18,10 @@ const Useget = (url) => {
 
         return () => {
             ambil = false
-        };
-    }, [isi]);
+        }
+    }, [isi])
 
     return [isi]
 }
 
-export default Useget;
+export default Useget
