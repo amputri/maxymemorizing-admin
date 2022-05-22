@@ -15,6 +15,7 @@
     "react-modal": "^3.14.4",
     "react-router-dom": "^5.3.0",
     "react-scripts": "^3.4.4",
+    "react-select": "^5.3.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

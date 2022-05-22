@@ -1,12 +1,24 @@
 import React from 'react'
-import Useget from '../../Hook/useGet'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { link } from '../../Axios/link'
 
 const User = () => {
-    const [isi] = Useget('admin/' + sessionStorage.getItem('id'))
+    const [isi, setIsi] = useState([])
+    const [pesan, setPesan] = useState('')
+    const [refresh, setRefresh] = useState(Math.random)
     const { register, handleSubmit, formState: { errors } } = useForm()
     let no = 1
+
+    useEffect(() => {
+        getIsi() // eslint-disable-next-line
+    }, [refresh]) 
+
+    async function getIsi() {
+        const res = await link.get('admin/' + sessionStorage.getItem('id'))
+        setIsi(res.data)  
+        console.log('visual')
+    }
 
     async function simpan(data) {
         let user = {
@@ -17,6 +29,8 @@ const User = () => {
         }
 
         const res = await link.post('/admin', user)
+        setPesan(res.data.message)
+        setRefresh(Math.random)
     }
 
     async function ubahStatus(id, status) {
@@ -27,6 +41,8 @@ const User = () => {
         }
 
         const res = await link.put('/admin/status/', user)
+        setPesan(res.data.message)
+        setRefresh(Math.random)
     }
 
     async function ubahLevel(id, level) {
@@ -37,6 +53,8 @@ const User = () => {
         }
 
         const res = await link.put('/admin/level/', user)
+        setPesan(res.data.message)
+        setRefresh(Math.random)
     }
 
     async function resetPassword(id) {
@@ -46,14 +64,23 @@ const User = () => {
         }
 
         const res = await link.put('/admin/reset-password/', user)
+        setPesan(res.data.message)
+        setRefresh(Math.random)
     }
 
     async function hapus(id) {
-        const res = await link.delete('/admin/' + id)
+        if (window.confirm('yakin akan menghapus?')) {
+            const res = await link.delete('/admin/' + id)
+            setPesan(res.data.pesan)
+            setRefresh(Math.random)
+        }
     }
 
     return (
         <div>
+            <div className="row">
+                <p>{pesan}</p>
+            </div>
             <div className="accordion" id="accordionExample">
                 <div className="accordion-item">
                     <h2 className="accordion-header" id="headingOne">
@@ -112,7 +139,7 @@ const User = () => {
                                     <td>{val.nama}</td>
                                     <td>{val.username}</td>
                                     <td>{
-                                        val.level === 1 ? <input onClick={() => ubahLevel(val.id, 2)} className="btn btn-success" type="submit" value="ADMINISTRATOR" /> : <input onClick={() => ubahStatus(val.id, 1)} className="btn btn-danger" type="submit" value="MODERATOR" />
+                                        val.level === 1 ? <input onClick={() => ubahLevel(val.id, 2)} className="btn btn-success" type="submit" value="ADMINISTRATOR" /> : <input onClick={() => ubahLevel(val.id, 1)} className="btn btn-danger" type="submit" value="MODERATOR" />
                                     }</td>
                                     <td>{
                                         val.status === 1 ? <input onClick={() => ubahStatus(val.id, 0)} className="btn btn-success" type="submit" value="AKTIF" /> : <input onClick={() => ubahStatus(val.id, 1)} className="btn btn-danger" type="submit" value="BANNED" />

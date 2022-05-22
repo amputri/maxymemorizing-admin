@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.min.js'
 import Back from './Back/Back'
 import Front from './Front/Front'
 import React from 'react'

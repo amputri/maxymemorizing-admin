@@ -14,7 +14,11 @@ const Side = () => {
                     <Link to={`${url}/beranda`}><li className="list-group-item">Beranda</li></Link>
                     <Link to={`${url}/surah`}><li className="list-group-item">Surah</li></Link>
                     <Link to={`${url}/ayat`}><li className="list-group-item">Ayat</li></Link>
-                    <Link to={`${url}/user`}><li className="list-group-item">Administrator</li></Link>
+                    <Link to={`${url}/user`}>
+                        {
+                            (sessionStorage.getItem('level') === '1') ? <li className="list-group-item">Administrator</li> : ""
+                        }
+                    </Link>
                 </ul>
             </div>
         </div>

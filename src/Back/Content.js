@@ -20,7 +20,7 @@ const Content = () => {
     if (isi === 'ayat') {
         tampil = <Ayat />
     }
-    if (isi === 'user') {
+    if (isi === 'user' && sessionStorage.getItem('level') === '1') {
         tampil = <User />
     }
     if (isi === 'profile') {

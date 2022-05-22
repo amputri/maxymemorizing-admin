@@ -9,3 +9,11 @@ export const link = axios.create({
         'x-access-token': token
     }
 })
+
+const globalUrl = "https://api.quran.com/api/v4"
+export const globalLink = axios.create({
+    baseURL: globalUrl
+})
+
+export const language = "id"
+export const wordFields = "text_uthmani"
