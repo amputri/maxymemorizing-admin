@@ -63,7 +63,7 @@ const Surah = () => {
 
     async function hapus() {
         if (window.confirm('yakin akan menghapus?')) {
-            const res = await link.delete('/surah/' + id)
+            const res = await link.delete('/surah/' + id + '/' + gambar.split('/surah/').pop())
             setPesan(res.data.pesan)
             setRefresh(Math.random)
         }

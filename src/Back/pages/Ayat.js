@@ -51,6 +51,7 @@ const Ayat = () => {
         const formData = new FormData()
         formData.append('id', `${id}:${nomor}`)
         formData.append('gambar', data.gambar[0])
+        formData.append('gambar_lama', gambar)
         formData.append('id_session', sessionStorage.getItem('id'))
 
         if (gambar === undefined) {
@@ -79,7 +80,7 @@ const Ayat = () => {
 
     async function hapus() {
         if (window.confirm('yakin akan menghapus?')) {
-            const res = await link.delete(`/ayat/${id}:${nomor}`)
+            const res = await link.delete(`/ayat/${id}:${nomor}/${gambar.split('/ayat/').pop()}`)
             setPesan(res.data.pesan)
             setRefresh(Math.random)
         }
