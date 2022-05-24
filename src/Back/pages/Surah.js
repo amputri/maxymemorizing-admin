@@ -3,13 +3,20 @@ import { useState, useEffect } from 'react'
 import { link, globalLink, language } from '../../Axios/link'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
+import { useLocation } from 'react-router-dom'
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 const Surah = () => {
+    const location = useLocation()
+
     const [surah, setSurah] = useState([])
     const [pesan, setPesan] = useState('')
-    const [id, setIdSurah] = useState(2)
+    const [id, setIdSurah] = useState(location.state?.idFromBeranda ? location.state?.idFromBeranda : 1)
     const [refresh, setRefresh] = useState(Math.random)
     const [gambar, setGambar] = useState('')
+    const [dataNarasi, setDataNarasi] = useState('')
+    const [dataUraian, setDataUraian] = useState('')
     const { register, handleSubmit, reset, setValue } = useForm()
 
     useEffect(() => {
@@ -18,7 +25,7 @@ const Surah = () => {
 
     useEffect(() => {
         getVisual() // eslint-disable-next-line
-    }, [refresh]) 
+    }, [refresh])
 
     async function fetchSurah() {
         const res = await globalLink.get(`/chapters?language=${language}`)
@@ -28,10 +35,10 @@ const Surah = () => {
 
     async function getVisual() {
         const res = await link.get('surah/' + id)
-        setGambar(res.data.gambar)  
+        setGambar(res.data.gambar)
         setValue('kata_kunci', res.data.kata_kunci)
-        setValue('narasi', res.data.narasi)
-        setValue('uraian', res.data.uraian)
+        setDataNarasi(res.data.narasi ? res.data.narasi : '')
+        setDataUraian(res.data.uraian ? res.data.uraian : '')
         console.log('visual')
     }
 
@@ -39,8 +46,8 @@ const Surah = () => {
         const formData = new FormData()
         formData.append('id', id)
         formData.append('kata_kunci', data.kata_kunci)
-        formData.append('narasi', data.narasi)
-        formData.append('uraian', data.uraian)
+        formData.append('narasi', dataNarasi)
+        formData.append('uraian', dataUraian)
         formData.append('gambar', data.gambar[0])
         formData.append('gambar_surah', gambar)
         formData.append('id_session', sessionStorage.getItem('id'))
@@ -49,11 +56,14 @@ const Surah = () => {
             const res = await link.post('/surah', formData)
             setPesan(res.data.message)
         } else {
-            const res = await link.post('/surah/'+id, formData)
+            const res = await link.post('/surah/' + id, formData)
             setPesan(res.data.message)
         }
-        setRefresh(Math.random)
         reset()
+        setDataNarasi('')
+        setDataUraian('')
+        setRefresh(Math.random)
+        
     }
 
     function getVisualSurah(e) {
@@ -87,17 +97,23 @@ const Surah = () => {
                         <input type="text" className="form-control" id="kata_kunci" {...register("kata_kunci", { required: true })} />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="narasi" className="form-label">narasi</label>
-                        <input type="text" className="form-control" id="narasi" {...register("narasi", { required: true })} />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="uraian" className="form-label">uraian</label>
-                        <input type="text" className="form-control" id="uraian" {...register("uraian", { required: true })} />
-                    </div>
-                    <div className="mb-3">
                         <label htmlFor="gambar" className="form-label">gambar</label>
                         <input type="file" className="form-control" id="gambar" {...register("gambar")} />
                     </div>
+                    <CKEditor
+                        editor={ClassicEditor}
+                        data={dataNarasi}
+                        onBlur={(event, editor) => {
+                            setDataNarasi(editor.getData())
+                        }}
+                    />
+                    <CKEditor
+                        editor={ClassicEditor}
+                        data={dataUraian}
+                        onBlur={(event, editor) => {
+                            setDataUraian(editor.getData())
+                        }}
+                    />
                     <div className="mb-3">
                         <input type="submit" className="btn btn-primary" />
                     </div>

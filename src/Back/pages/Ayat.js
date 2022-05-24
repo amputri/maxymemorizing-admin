@@ -3,22 +3,25 @@ import { useState, useEffect } from 'react'
 import { link, globalLink, language, wordFields } from '../../Axios/link'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
+import { useLocation } from 'react-router-dom'
 
 const Ayat = () => {
+    const location = useLocation()
+
     const [surah, setSurah] = useState([])
     const [ayat, setAyat] = useState([])
     const [options, setOptions] = useState([])
     const [specSurah, setSpecSurah] = useState([])
     const [pesan, setPesan] = useState('')
-    const [id, setIdSurah] = useState(1)
-    const [nomor, setNomorAyat] = useState(1)
+    const [id, setIdSurah] = useState(location.state?.idFromBeranda ? location.state?.idFromBeranda.split(':')[0] : 1)
+    const [nomor, setNomorAyat] = useState(location.state?.idFromBeranda ? location.state?.idFromBeranda.split(':')[1] : 1)
     const [refresh, setRefresh] = useState(Math.random)
     const [gambar, setGambar] = useState('')
     const { register, handleSubmit, reset } = useForm()
 
     useEffect(() => {
         fetchSurah()
-        setOptionsSelect(7)
+        setOptionsSelect(location.state?.jumlahAyat ? location.state?.jumlahAyat : 7) // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
@@ -32,6 +35,7 @@ const Ayat = () => {
     async function fetchSurah() {
         const res = await globalLink.get(`/chapters?language=${language}`)
         setSurah(res.data.chapters)
+        setSpecSurah(location.state?.idFromBeranda ? res.data.chapters[location.state?.idFromBeranda.split(':')[0]-1] : res.data.chapters[0])
         console.log('surah')
     }
 
