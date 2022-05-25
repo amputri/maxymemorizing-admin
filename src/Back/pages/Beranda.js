@@ -1,10 +1,11 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { link, globalLink, language } from '../../Axios/link'
+import { link, globalLink, language, wordFields, translations } from '../../Axios/link'
 import { Link } from 'react-router-dom'
 
 const Beranda = () => {
     const [surah, setSurah] = useState([])
+    const [ayat, setAyat] = useState([])
     const [visualSurah, setVisualSurah] = useState([])
     const [visualAyat, setVisualAyat] = useState([])
     let noSurah = 1
@@ -13,7 +14,7 @@ const Beranda = () => {
     useEffect(() => {
         getVisualSurah()
         getVisualAyat()
-        fetchSurah()
+        fetchSurah() // eslint-disable-next-line
     }, [])
 
     async function getVisualSurah() {
@@ -25,6 +26,7 @@ const Beranda = () => {
     async function getVisualAyat() {
         const res = await link.get('ayat')
         setVisualAyat(res.data)
+        getAyatWithVisual(res.data)
         console.log('visual ayat')
     }
 
@@ -32,6 +34,17 @@ const Beranda = () => {
         const res = await globalLink.get(`/chapters?language=${language}`)
         setSurah(res.data.chapters)
         console.log('surah')
+    }
+
+    async function fetchAyat(id) {
+        const res = await globalLink.get(`/verses/by_key/${id}?language=${language}&words=true&translations=${translations}&word_fields=${wordFields}`)
+        return res.data.verse
+    }
+
+    async function getAyatWithVisual(visualAyat) {
+        const withVisual = await Promise.all(visualAyat.map(visualAyat => fetchAyat(visualAyat.id)))
+        setAyat(withVisual)
+        console.log('ambil ayat sesuai visual tersedia')
     }
 
     return (
@@ -49,7 +62,7 @@ const Beranda = () => {
                                 <th>No</th>
                                 <th>Nomor Surah</th>
                                 <th>Nama Surah</th>
-                                <th>Nomor Ayat</th>
+                                <th>Kata Kunci</th>
                                 <th>Detail</th>
                             </tr>
                         </thead>
@@ -86,6 +99,7 @@ const Beranda = () => {
                                 <th>Nomor Surah</th>
                                 <th>Nama Surah</th>
                                 <th>Nomor Ayat</th>
+                                <th>Terjemah Ayat</th>
                                 <th>Detail</th>
                             </tr>
                         </thead>
@@ -97,6 +111,7 @@ const Beranda = () => {
                                 <td>{val.id.split(':')[0]}</td>
                                 <td>{surah[val.id.split(':')[0]-1].name_simple}</td>
                                 <td>{val.id.split(':')[1]}</td>
+                                <td>{ayat[index]?.translations[0].text}</td>
                                 <td>{
                                     <Link to={{
                                         pathname: "/admin/ayat",

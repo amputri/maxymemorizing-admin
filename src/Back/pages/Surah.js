@@ -63,7 +63,6 @@ const Surah = () => {
         setDataNarasi('')
         setDataUraian('')
         setRefresh(Math.random)
-        
     }
 
     function getVisualSurah(e) {

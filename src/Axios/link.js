@@ -17,3 +17,4 @@ export const globalLink = axios.create({
 
 export const language = "id"
 export const wordFields = "text_uthmani"
+export const translations = "33"

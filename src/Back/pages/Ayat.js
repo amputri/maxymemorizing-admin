@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { link, globalLink, language, wordFields } from '../../Axios/link'
+import { link, globalLink, language, wordFields, translations } from '../../Axios/link'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
 import { useLocation } from 'react-router-dom'
@@ -40,7 +40,7 @@ const Ayat = () => {
     }
 
     async function fetchAyat() {
-        const res = await globalLink.get(`/verses/by_key/${id}:${nomor}?language=${language}&words=true&word_fields=${wordFields}`)
+        const res = await globalLink.get(`/verses/by_key/${id}:${nomor}?language=${language}&words=true&translations=${translations}&word_fields=${wordFields}`)
         setAyat(res.data.verse)
         console.log('ayat')
     }
