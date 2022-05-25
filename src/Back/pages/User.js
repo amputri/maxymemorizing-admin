@@ -7,18 +7,46 @@ const User = () => {
     const [isi, setIsi] = useState([])
     const [pesan, setPesan] = useState('')
     const [refresh, setRefresh] = useState(Math.random)
-    const { register, handleSubmit, formState: { errors } } = useForm()
-    let no = 1
+    const { register, handleSubmit, formState: { errors }, reset } = useForm()
+    
+    let [halaman, setHalaman] = useState(1)
+    let [halamanAwal, setHalamanAwal] = useState(0)
+    let [totalHalaman, setTotalHalaman] = useState()
+    let [listPage, setListPage] = useState([])
+    let [nomor, setNomor] = useState()
 
     useEffect(() => {
+        countUser() // eslint-disable-next-line
+    }, [refresh])
+
+    useEffect(() => {
+        setHalamanAwal((halaman * 10) - 10) // eslint-disable-next-line
+    }, [halaman, refresh])
+
+    useEffect(() => {
+        setNomor(halamanAwal + 1)
         getIsi() // eslint-disable-next-line
-    }, [refresh]) 
+    }, [halamanAwal, refresh])
+
+    async function countUser() {
+        const res = await link.get('admin/' + sessionStorage.getItem('id'))
+        setTotalHalaman(Math.ceil(res.data / 10))
+
+        var obj = []
+        for (var i = 1; i <= Math.ceil(res.data / 10); i++) {
+            obj.push(i);
+        }
+        setListPage(obj)
+
+        console.log('jumlah Data')
+    }
 
     async function getIsi() {
-        const res = await link.get('admin/' + sessionStorage.getItem('id'))
+        const res = await link.get(`admin/${sessionStorage.getItem('id')}/${halamanAwal}`)
         setIsi(res.data)  
         console.log('visual')
     }
+
 
     async function simpan(data) {
         let user = {
@@ -31,6 +59,7 @@ const User = () => {
         const res = await link.post('/admin', user)
         setPesan(res.data.message)
         setRefresh(Math.random)
+        reset()
     }
 
     async function ubahStatus(id, status) {
@@ -135,7 +164,7 @@ const User = () => {
                         <tbody>
                             {isi.map((val, index) => (
                                 <tr key={index}>
-                                    <td>{no++}</td>
+                                    <td>{nomor++}</td>
                                     <td>{val.nama}</td>
                                     <td>{val.username}</td>
                                     <td>{
@@ -154,6 +183,23 @@ const User = () => {
                             ))}
                         </tbody>
                     </table>
+                    <nav>
+                        <ul className="pagination justify-content-center">
+                            <li className="page-item">
+                                {
+                                    halaman > 1 ? <input type="submit" className="page-link" onClick={() => setHalaman(halaman-1)} value="previous" /> : ''
+                                }
+                            </li>
+                            {listPage.map((item, index) =>
+                                <li key={index + 1} className="page-item"><input type="submit" value={index + 1} className="page-link" onClick={() => setHalaman(index + 1)} /></li>
+                            )}
+                            <li className="page-item">
+                                {
+                                    halaman < totalHalaman ? <input type="submit" value="next" className="page-link" onClick={() => setHalaman(halaman+1)} /> : ''
+                                }
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>

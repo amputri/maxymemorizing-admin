@@ -21,7 +21,7 @@ const Login = () => {
         reset()
 
         if (getToken() !== 'undefined') {
-            history.push('/admin')
+            history.push('/admin/beranda')
             window.location.reload()
         }
     }

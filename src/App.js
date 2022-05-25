@@ -11,7 +11,6 @@ function App() {
 		<div className="container">
 			<Router>
 				<Route path="/" component={Front} exact />
-				<Route path="/home" component={Front} />
 				<Route path="/admin" component={Back} />
 				<Route path="/login" component={Login} />
 			</Router>
