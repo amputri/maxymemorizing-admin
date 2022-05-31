@@ -3,7 +3,7 @@ import Footer from './layouts/Footer'
 import Main from './layouts/Main'
 import Nav from './layouts/Nav'
 import Side from './layouts/Side'
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 const Back = () => {
     if (sessionStorage.getItem('token') === null) {

@@ -1,41 +1,37 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { link, globalLink, language, wordFields, translations } from '../../Axios/link'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
-import { useLocation } from 'react-router-dom'
 
 const Ayat = () => {
-    const location = useLocation()
-
     const [surah, setSurah] = useState([])
     const [ayat, setAyat] = useState([])
     const [options, setOptions] = useState([])
     const [specSurah, setSpecSurah] = useState([])
     const [pesan, setPesan] = useState('')
-    const [id, setIdSurah] = useState(location.state?.idFromBeranda ? location.state?.idFromBeranda.split(':')[0] : 1)
-    const [nomor, setNomorAyat] = useState(location.state?.idFromBeranda ? location.state?.idFromBeranda.split(':')[1] : 1)
+    const [id, setIdSurah] = useState(1)
+    const [nomor, setNomorAyat] = useState(1)
     const [refresh, setRefresh] = useState(Math.random)
     const [gambar, setGambar] = useState('')
     const { register, handleSubmit, reset } = useForm()
 
     useEffect(() => {
         fetchSurah()
-        setOptionsSelect(location.state?.jumlahAyat ? location.state?.jumlahAyat : 7) // eslint-disable-next-line
+        setOptionsSelect(7)
     }, [])
 
     useEffect(() => {
         fetchAyat() // eslint-disable-next-line
-    }, [id, nomor]) 
+    }, [id, nomor])
 
     useEffect(() => {
         getVisual() // eslint-disable-next-line
-    }, [refresh]) 
+    }, [refresh])
 
     async function fetchSurah() {
         const res = await globalLink.get(`/chapters?language=${language}`)
         setSurah(res.data.chapters)
-        setSpecSurah(location.state?.idFromBeranda ? res.data.chapters[location.state?.idFromBeranda.split(':')[0]-1] : res.data.chapters[0])
+        setSpecSurah(res.data.chapters[0])
         console.log('surah')
     }
 
@@ -47,7 +43,7 @@ const Ayat = () => {
 
     async function getVisual() {
         const res = await link.get(`ayat/${id}:${nomor}`)
-        setGambar(res.data.gambar)  
+        setGambar(res.data.gambar)
         console.log('visual')
     }
 
@@ -92,8 +88,8 @@ const Ayat = () => {
 
     function setOptionsSelect(versesCount) {
         var obj = []
-        for(var i = 1; i <= versesCount; i++) {
-            obj.push({value:i, label: i});
+        for (var i = 1; i <= versesCount; i++) {
+            obj.push({ value: i, label: i });
         }
         setOptions(obj)
     }
@@ -102,14 +98,14 @@ const Ayat = () => {
         <div>
             <div className="row">{pesan}</div>
             <div className="row">{
-                specSurah.revelation_place && ayat.juz_number ? specSurah.revelation_place+ayat.juz_number : ''
+                specSurah.revelation_place && ayat.juz_number ? specSurah.revelation_place + ayat.juz_number : ''
             }</div>
             <div className="row">
                 <Select
                     onChange={getVisualSurah.bind(this)}
                     options={
                         surah.map(srh => ({
-                            value: srh.id, label: srh.name_simple, data:srh
+                            value: srh.id, label: srh.name_simple, data: srh
                         }))
                     }
                 />

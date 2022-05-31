@@ -3,12 +3,12 @@ import { useForm } from 'react-hook-form'
 import { link } from '../../Axios/link'
 
 const Profile = () => {
-    const { register, handleSubmit, setValue} = useForm()
+    const { register, handleSubmit, setValue } = useForm()
     const [pesan, setPesan] = useState('')
 
     useEffect(() => {
         getIsi() // eslint-disable-next-line
-    }, []) 
+    }, [])
 
     async function getIsi() {
         setValue('nama', sessionStorage.getItem('nama'))
@@ -23,7 +23,7 @@ const Profile = () => {
             if (data.password_baru !== data.konfirm_password) {
                 console.log('konfirmasi password salah')
                 return
-            } 
+            }
             passwordBaru = data.password_baru
         }
 
@@ -42,7 +42,7 @@ const Profile = () => {
         if (res.status === 200) {
             sessionStorage.setItem('nama', data.nama)
             sessionStorage.setItem('username', data.username)
-            
+
             window.location.reload()
         }
     }

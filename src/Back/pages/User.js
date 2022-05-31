@@ -1,52 +1,25 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { link } from '../../Axios/link'
+import { MDBDataTable } from 'mdbreact';
 
 const User = () => {
     const [isi, setIsi] = useState([])
     const [pesan, setPesan] = useState('')
     const [refresh, setRefresh] = useState(Math.random)
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
-    
-    let [halaman, setHalaman] = useState(1)
-    let [halamanAwal, setHalamanAwal] = useState(0)
-    let [totalHalaman, setTotalHalaman] = useState()
-    let [listPage, setListPage] = useState([])
-    let [nomor, setNomor] = useState()
+
+    let nomor = 1
 
     useEffect(() => {
-        countUser() // eslint-disable-next-line
+        getIsi() 
     }, [refresh])
 
-    useEffect(() => {
-        setHalamanAwal((halaman * 10) - 10) // eslint-disable-next-line
-    }, [halaman, refresh])
-
-    useEffect(() => {
-        setNomor(halamanAwal + 1)
-        getIsi() // eslint-disable-next-line
-    }, [halamanAwal, refresh])
-
-    async function countUser() {
-        const res = await link.get('admin/' + sessionStorage.getItem('id'))
-        setTotalHalaman(Math.ceil(res.data / 10))
-
-        var obj = []
-        for (var i = 1; i <= Math.ceil(res.data / 10); i++) {
-            obj.push(i);
-        }
-        setListPage(obj)
-
-        console.log('jumlah Data')
-    }
-
     async function getIsi() {
-        const res = await link.get(`admin/${sessionStorage.getItem('id')}/${halamanAwal}`)
-        setIsi(res.data)  
+        const res = await link.get(`admin/${sessionStorage.getItem('id')}`)
+        setIsi(res.data)
         console.log('visual')
     }
-
 
     async function simpan(data) {
         let user = {
@@ -149,57 +122,30 @@ const User = () => {
             </div>
             <div className="row">
                 <div>
-                    <table className="table mt-4">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>Username</th>
-                                <th>Level</th>
-                                <th>Status</th>
-                                <th>Reset Password</th>
-                                <th>Hapus</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {isi.map((val, index) => (
-                                <tr key={index}>
-                                    <td>{nomor++}</td>
-                                    <td>{val.nama}</td>
-                                    <td>{val.username}</td>
-                                    <td>{
-                                        val.level === 1 ? <input onClick={() => ubahLevel(val.id, 2)} className="btn btn-success" type="submit" value="ADMINISTRATOR" /> : <input onClick={() => ubahLevel(val.id, 1)} className="btn btn-danger" type="submit" value="MODERATOR" />
-                                    }</td>
-                                    <td>{
-                                        val.status === 1 ? <input onClick={() => ubahStatus(val.id, 0)} className="btn btn-success" type="submit" value="AKTIF" /> : <input onClick={() => ubahStatus(val.id, 1)} className="btn btn-danger" type="submit" value="BANNED" />
-                                    }</td>
-                                    <td>{
-                                        <input onClick={() => resetPassword(val.id)} className="btn btn-warning" type="submit" value="RESET" />
-                                    }</td>
-                                    <td>{
-                                        <input onClick={() => hapus(val.id)} className="btn btn-danger" type="submit" value="HAPUS" />
-                                    }</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <nav>
-                        <ul className="pagination justify-content-center">
-                            <li className="page-item">
-                                {
-                                    halaman > 1 ? <input type="submit" className="page-link" onClick={() => setHalaman(halaman-1)} value="previous" /> : ''
-                                }
-                            </li>
-                            {listPage.map((item, index) =>
-                                <li key={index + 1} className="page-item"><input type="submit" value={index + 1} className="page-link" onClick={() => setHalaman(index + 1)} /></li>
-                            )}
-                            <li className="page-item">
-                                {
-                                    halaman < totalHalaman ? <input type="submit" value="next" className="page-link" onClick={() => setHalaman(halaman+1)} /> : ''
-                                }
-                            </li>
-                        </ul>
-                    </nav>
+                    <MDBDataTable
+                        borderless
+                        small
+                        data={{
+                            columns: [
+                                { label: 'No', field: 'nomor' },
+                                { label: 'Nama', field: 'nama' },
+                                { label: 'Username', field: 'username' },
+                                { label: 'Level', field: 'level' },
+                                { label: 'Status', field: 'status' },
+                                { label: 'Reset Password', field: 'resetPassword' },
+                                { label: 'Hapus', field: 'hapus' }
+                            ],
+                            rows: isi.map((val) => ({
+                                nomor: nomor++,
+                                nama: val.nama+val.create_by+val.update_by,
+                                username: val.username,
+                                level: val.level === 1 ? <input onClick={() => ubahLevel(val.id, 2)} className="btn btn-success" type="submit" value="ADMINISTRATOR" /> : <input onClick={() => ubahLevel(val.id, 1)} className="btn btn-danger" type="submit" value="MODERATOR" />,
+                                status: val.status === 1 ? <input onClick={() => ubahStatus(val.id, 0)} className="btn btn-success" type="submit" value="AKTIF" /> : <input onClick={() => ubahStatus(val.id, 1)} className="btn btn-danger" type="submit" value="BANNED" />,
+                                resetPassword: <input onClick={() => resetPassword(val.id)} className="btn btn-warning" type="submit" value="RESET" />,
+                                hapus: <input onClick={() => hapus(val.id)} className="btn btn-danger" type="submit" value="HAPUS" />
+                            }))
+                        }}
+                    />
                 </div>
             </div>
         </div>

@@ -1,18 +1,14 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { link, globalLink, language } from '../../Axios/link'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
-import { useLocation } from 'react-router-dom'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 const Surah = () => {
-    const location = useLocation()
-
     const [surah, setSurah] = useState([])
     const [pesan, setPesan] = useState('')
-    const [id, setIdSurah] = useState(location.state?.idFromBeranda ? location.state?.idFromBeranda : 1)
+    const [id, setIdSurah] = useState(1)
     const [refresh, setRefresh] = useState(Math.random)
     const [gambar, setGambar] = useState('')
     const [dataNarasi, setDataNarasi] = useState('')

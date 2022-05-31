@@ -1,7 +1,7 @@
 import React from 'react'
 import { link } from '../Axios/link'
 import { useForm } from 'react-hook-form'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 const Login = () => {
     const { register, handleSubmit, reset } = useForm()
@@ -26,7 +26,7 @@ const Login = () => {
         }
     }
 
-    const getToken = ()=>(sessionStorage.getItem('token'))
+    const getToken = () => (sessionStorage.getItem('token'))
 
     return (
         <div>
