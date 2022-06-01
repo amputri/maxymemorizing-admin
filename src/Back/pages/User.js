@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { link } from '../../Axios/link'
-import { MDBDataTable } from 'mdbreact';
+import { MDBDataTable } from 'mdbreact'
 
 const User = () => {
     const [isi, setIsi] = useState([])

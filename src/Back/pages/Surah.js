@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { link, globalLink, language } from '../../Axios/link'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from '@ckeditor/ckeditor5-react'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 const Surah = () => {
     const [surah, setSurah] = useState([])

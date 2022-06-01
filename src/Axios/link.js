@@ -18,3 +18,10 @@ export const globalLink = axios.create({
 export const language = "id"
 export const wordFields = "text_uthmani"
 export const translations = "33"
+
+export const pokokOptions = [
+    {value: 1, label: "Aqidah"},
+    {value: 2, label: "Ibadah"},
+    {value: 3, label: "Muamalah"},
+    {value: 4, label: "Akhlaq"}
+]
