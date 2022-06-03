@@ -93,76 +93,112 @@ const Tema = () => {
     }
 
     return (
-        <div>
-            <div className="row">{pesan}</div>
-            <div className="row">
-                <Select
-                    onChange={getKategori.bind(this)}
-                    options={pokokOptions}
-                    defaultValue={pokokOptions[0]}
-                />
-                <Select
-                    onChange={getTema.bind(this)}
-                    options={
-                        kategori.map(kategori => ({
-                            value: kategori.id, label: kategori.kategori
-                        }))
-                    }
-                />
-                <form onSubmit={handleSubmit(simpan)}>
-                    <div className="mb-3">
-                        <label htmlFor="urutan" className="form-label">urutan</label>
-                        <input type="number" className="form-control" id="urutan" {...register("urutan", { required: true })} />
+        <div className='container'>
+            <div className="row mx-auto mt-2 mb-4">
+                <div className="accordion mx-auto" id="accordionExample">
+                    <div className="accordion-item">
+                        <h2 className="accordion-header" id="headingOne">
+                            <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Input Tema Postingan
+                            </button>
+                        </h2>
+                        <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div className="accordion-body">
+                                <form onSubmit={handleSubmit(simpan)}>
+                                    <div className="row">
+                                        <div className="col-7 me-2">
+                                            {
+                                                pesan !== '' ? <div className='bg-info p-2 text-white rounded shadow text-center mb-4'>{pesan}</div> : ''
+                                            }
+                                            <label className="form-label mb-3">Pokok Materi</label>
+                                            <Select
+                                                onChange={getKategori.bind(this)}
+                                                options={pokokOptions}
+                                                defaultValue={pokokOptions[0]}
+                                            />
+                                            <Select
+                                                onChange={getTema.bind(this)}
+                                                options={
+                                                    kategori.map(kategori => ({
+                                                        value: kategori.id, label: kategori.kategori
+                                                    }))
+                                                }
+                                                placeholder="Pilih Kategori"
+                                                className='my-3'
+                                            />
+                                            <div className="mb-3">
+                                                <label htmlFor="urutan" className="form-label">Urutan</label>
+                                                <input type="number" className="form-control" id="urutan" {...register("urutan", { required: true })} />
+                                            </div>
+                                        </div>
+                                        <div className="col-4">
+                                            {
+                                                gambar !== '' ? <img src={gambar} className="card-img-top mx-auto mt-2" alt="..." /> : <img src={process.env.PUBLIC_URL + '/logo.png'} className="card-img-top mx-auto mt-2" alt="..." />
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="mb-3">
+                                            <label htmlFor="judul" className="form-label">Judul</label>
+                                            <input type="text" className="form-control" id="judul" {...register("judul", { required: true })} />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label htmlFor="gambar" className="form-label">Gambar</label>
+                                            <input type="file" className="form-control" id="gambar" {...register("gambar")} />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label className="form-label">Referensi</label>
+                                            <CKEditor
+                                                editor={ClassicEditor}
+                                                data={dataReferensi}
+                                                onBlur={(event, editor) => {
+                                                    setDataReferensi(editor.getData())
+                                                }}
+                                                className="mx-2"
+                                            />
+                                        </div>
+                                        <div className="mt-3 d-grid">
+                                            <input type="submit" className="btn btn-primary" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="judul" className="form-label">judul</label>
-                        <input type="text" className="form-control" id="judul" {...register("judul", { required: true })} />
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="gambar" className="form-label">gambar</label>
-                        <input type="file" className="form-control" id="gambar" {...register("gambar")} />
-                    </div>
-                    <CKEditor
-                        editor={ClassicEditor}
-                        data={dataReferensi}
-                        onBlur={(event, editor) => {
-                            setDataReferensi(editor.getData())
+                </div>
+            </div>
+            <div className="row mx-auto">
+                <div>
+                    <h5 className="card-title">Data Tema Postingan</h5>
+                    <hr />
+                    <MDBDataTable
+                        borderless
+                        small
+                        data={{
+                            columns: [
+                                { label: 'Nomor', field: 'nomor' },
+                                { label: 'Judul', field: 'judul' },
+                                { label: 'Editor', field: 'editor' },
+                                { label: 'Tanggal', field: 'tanggal' },
+                                { label: 'Ubah', field: 'ubah' },
+                                { label: 'Hapus', field: 'hapus' },
+                                { label: 'Materi', field: 'materi' }
+                            ],
+                            rows: tema.map((val) => ({
+                                nomor: val.urutan,
+                                judul: val.judul,
+                                editor: val.update_by,
+                                tanggal: val.update_at,
+                                ubah: <i onClick={() => showData(val)} className="fa fa-edit text-warning" />,
+                                hapus: <i onClick={() => hapus(val.id)} className="fa fa-trash text-danger" />,
+                                materi: <Link to={{
+                                    pathname: "/admin/materi",
+                                    state: { pokok: pokok, idKategori: idKategori, idTema: val.id }
+                                }} replace><i className="fa fa-search text-success" /></Link>
+                            }))
                         }}
                     />
-                    {
-                        gambar !== '' ? <img src={gambar} alt="" /> : ''
-                    }
-                    <div className="mb-3">
-                        <input type="submit" className="btn btn-primary" />
-                    </div>
-                </form>
-                <MDBDataTable
-                    borderless
-                    small
-                    data={{
-                        columns: [
-                            { label: 'Nomor', field: 'nomor' },
-                            { label: 'Judul', field: 'judul' },
-                            { label: 'Editor', field: 'editor' },
-                            { label: 'Tanggal', field: 'tanggal' },
-                            { label: 'Ubah', field: 'ubah' },
-                            { label: 'Hapus', field: 'hapus' },
-                            { label: 'Materi', field: 'materi' }
-                        ],
-                        rows: tema.map((val) => ({
-                            nomor: val.urutan,
-                            judul: val.judul,
-                            editor: val.update_by,
-                            tanggal: val.update_at,
-                            ubah: <input onClick={() => showData(val)} className="btn btn-success" type="submit" value="Ubah" />,
-                            hapus: <input onClick={() => hapus(val.id)} className="btn btn-danger" type="submit" value="Hapus" />,
-                            materi: <Link to={{
-                                            pathname: "/admin/materi",
-                                            state: { pokok: pokok, idKategori: idKategori, idTema: val.id }
-                                        }} replace className="btn btn-info">Detail</Link>
-                        }))
-                    }}
-                />
+                </div>
             </div>
         </div>
     )

@@ -102,72 +102,99 @@ const Materi = () => {
     }
 
     return (
-        <div>
-            <div className="row">{pesan}</div>
-            <div className="row">
-                <Select
-                    onChange={getKategori.bind(this)}
-                    options={pokokOptions}
-                    defaultValue={pokokOptions[0]}
-                />
-                <Select
-                    onChange={getTema.bind(this)}
-                    options={
-                        kategori.map(kategori => ({
-                            value: kategori.id, label: kategori.kategori
-                        }))
-                    }
-                />
-                <Select
-                    onChange={getMateri.bind(this)}
-                    options={
-                        tema.map(tema => ({
-                            value: tema.id, label: tema.judul
-                        }))
-                    }
-                />
-                <form onSubmit={handleSubmit(simpan)}>
-                    <div className="mb-3">
-                        <label htmlFor="urutan" className="form-label">urutan</label>
-                        <input type="number" className="form-control" id="urutan" {...register("urutan", { required: true })} />
+        <div className='container'>
+            <div className="row mx-auto mt-2 mb-4">
+                <div className="accordion mb-4" id="accordionExample">
+                    <div className="accordion-item">
+                        <h2 className="accordion-header" id="headingOne">
+                            <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Input Materi Postingan
+                            </button>
+                        </h2>
+                        <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div className="accordion-body">
+                                {
+                                    pesan !== '' ? <div className='bg-info p-2 text-white rounded shadow text-center mb-4'>{pesan}</div> : ''
+                                }
+                                <label className="form-label mb-3">Pokok Materi</label>
+                                <Select
+                                    onChange={getKategori.bind(this)}
+                                    options={pokokOptions}
+                                    defaultValue={pokokOptions[0]}
+                                />
+                                <Select
+                                    onChange={getTema.bind(this)}
+                                    options={
+                                        kategori.map(kategori => ({
+                                            value: kategori.id, label: kategori.kategori
+                                        }))
+                                    }
+                                    placeholder="Pilih Kategori"
+                                    className='mt-3'
+                                />
+                                <Select
+                                    onChange={getMateri.bind(this)}
+                                    options={
+                                        tema.map(tema => ({
+                                            value: tema.id, label: tema.judul
+                                        }))
+                                    }
+                                    placeholder="Pilih Tema"
+                                    className='my-3'
+                                />
+                                <form onSubmit={handleSubmit(simpan)}>
+                                    <div className="mb-3">
+                                        <label htmlFor="urutan" className="form-label">Urutan</label>
+                                        <input type="number" className="form-control" id="urutan" {...register("urutan", { required: true })} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="judul" className="form-label">Judul</label>
+                                        <input type="text" className="form-control" id="judul" {...register("judul", { required: true })} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label mb-3">Materi</label>
+                                        <CKEditor
+                                            editor={ClassicEditor}
+                                            data={dataMateri}
+                                            onBlur={(event, editor) => {
+                                                setDataMateri(editor.getData())
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="my-3 d-grid">
+                                        <input type="submit" className="btn btn-primary" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="judul" className="form-label">judul</label>
-                        <input type="text" className="form-control" id="judul" {...register("judul", { required: true })} />
-                    </div>
-                    <CKEditor
-                        editor={ClassicEditor}
-                        data={dataMateri}
-                        onBlur={(event, editor) => {
-                            setDataMateri(editor.getData())
+                </div>
+                <div>
+                    <h5 className="card-title">Data Materi Postingan</h5>
+                    <hr />
+                    <MDBDataTable
+                        borderless
+                        small
+                        data={{
+                            columns: [
+                                { label: 'Nomor', field: 'nomor' },
+                                { label: 'Judul', field: 'judul' },
+                                { label: 'Editor', field: 'editor' },
+                                { label: 'Tanggal', field: 'tanggal' },
+                                { label: 'Ubah', field: 'ubah' },
+                                { label: 'Hapus', field: 'hapus' }
+                            ],
+                            rows: materi.map((val) => ({
+                                nomor: val.urutan,
+                                judul: val.judul,
+                                editor: val.update_by,
+                                tanggal: val.update_at,
+                                ubah: <i onClick={() => showData(val)} className="fa fa-edit text-warning" />,
+                                hapus: <i onClick={() => hapus(val.id)} className="fa fa-trash text-danger" />
+                            }))
                         }}
                     />
-                    <div className="mb-3">
-                        <input type="submit" className="btn btn-primary" />
-                    </div>
-                </form>
-                <MDBDataTable
-                    borderless
-                    small
-                    data={{
-                        columns: [
-                            { label: 'Nomor', field: 'nomor' },
-                            { label: 'Judul', field: 'judul' },
-                            { label: 'Editor', field: 'editor' },
-                            { label: 'Tanggal', field: 'tanggal' },
-                            { label: 'Ubah', field: 'ubah' },
-                            { label: 'Hapus', field: 'hapus' }
-                        ],
-                        rows: materi.map((val) => ({
-                            nomor: val.urutan,
-                            judul: val.judul,
-                            editor: val.update_by,
-                            tanggal: val.update_at,
-                            ubah: <input onClick={() => showData(val)} className="btn btn-success" type="submit" value="Ubah" />,
-                            hapus: <input onClick={() => hapus(val.id)} className="btn btn-danger" type="submit" value="Hapus" />
-                        }))
-                    }}
-                />
+                </div>
             </div>
         </div>
     )

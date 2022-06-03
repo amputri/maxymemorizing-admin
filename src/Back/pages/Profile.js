@@ -49,34 +49,38 @@ const Profile = () => {
 
     return (
         <div>
-            <div className="row">
-                {pesan}
+            <div className="card col-6 mx-auto my-4">
+                <div className="card-body">
+                    {
+                        pesan !== '' ? <div className='bg-info p-2 text-white rounded shadow text-center mb-4'>{pesan}</div> : ''
+                    }
+                    <form onSubmit={handleSubmit(ubah)}>
+                        <div className="mb-3">
+                            <label htmlFor="nama" className="form-label">Nama</label>
+                            <input type="text" className="form-control" id="nama" {...register("nama", { required: true })} />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="username" className="form-label">Username</label>
+                            <input type="text" className="form-control" id="username" {...register("username", { required: true })} />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="password" className="form-label">Password</label>
+                            <input type="password" className="form-control" id="password" {...register("password", { required: true })} />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="password_baru" className="form-label">Password Baru</label>
+                            <input type="password" className="form-control" id="password_baru" {...register("password_baru")} />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="konfirm_password" className="form-label">Konfirmasi Password</label>
+                            <input type="password" className="form-control" id="konfirm_password" {...register("konfirm_password")} />
+                        </div>
+                        <div className="mb-3 d-grid">
+                            <input type="submit" className="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
             </div>
-            <form onSubmit={handleSubmit(ubah)}>
-                <div className="mb-3">
-                    <label htmlFor="nama" className="form-label">nama</label>
-                    <input type="text" className="form-control" id="nama" {...register("nama", { required: true })} />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="username" className="form-label">username</label>
-                    <input type="text" className="form-control" id="username" {...register("username", { required: true })} />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="password" className="form-label">password</label>
-                    <input type="password" className="form-control" id="password" {...register("password", { required: true })} />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="password_baru" className="form-label">password baru</label>
-                    <input type="password" className="form-control" id="password_baru" {...register("password_baru")} />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="konfirm_password" className="form-label">konfirmasi password</label>
-                    <input type="password" className="form-control" id="konfirm_password" {...register("konfirm_password")} />
-                </div>
-                <div className="mb-3">
-                    <input type="submit" className="btn btn-primary" />
-                </div>
-            </form>
         </div>
     )
 }

@@ -96,36 +96,59 @@ const Ayat = () => {
 
     return (
         <div>
-            <div className="row">{pesan}</div>
-            <div className="row">{
-                specSurah.revelation_place && ayat.juz_number ? specSurah.revelation_place + ayat.juz_number : ''
-            }</div>
-            <div className="row">
-                <Select
-                    onChange={getVisualSurah.bind(this)}
-                    options={
-                        surah.map(srh => ({
-                            value: srh.id, label: srh.name_simple, data: srh
-                        }))
+            <div className="row mx-auto mt-2 mb-4">
+                <div className="card col-4 mx-auto">
+                    <div className="card-body">
+                        {
+                            pesan !== '' ? <div className='bg-info p-2 text-white rounded shadow text-center mb-4'>{pesan}</div> : ''
+                        }
+                        <Select
+                            onChange={getVisualSurah.bind(this)}
+                            options={
+                                surah.map(srh => ({
+                                    value: srh.id, label: srh.name_simple, data: srh
+                                }))
+                            }
+                            placeholder="Pilih Surah"
+                        />
+                        <Select
+                            onChange={getVisualAyat.bind(this)}
+                            options={options}
+                            placeholder="Pilih Ayat"
+                            className='my-3'
+                        />
+                        <form onSubmit={handleSubmit(simpan)}>
+                            <div>
+                                <label htmlFor="gambar" className="form-label">gambar</label>
+                                <input type="file" className="form-control" id="gambar" {...register("gambar", { required: true })} />
+                            </div>
+                            <div className="my-3 d-grid">
+                                <input type="submit" className="btn btn-primary" />
+                            </div>
+                        </form>
+                        <input onClick={() => hapus()} className="btn btn-danger" type="submit" value="HAPUS" />
+                    </div>
+                </div>
+                <div className="card col-7 mx-auto">
+                    {
+                        gambar !== undefined ? <img src={gambar} className="mx-auto mt-2" width="50%" alt="..." /> : <img src={process.env.PUBLIC_URL + '/logo.png'} className="mx-auto mt-2" width="50%" alt="..." />
                     }
-                />
-                <Select
-                    onChange={getVisualAyat.bind(this)}
-                    options={options}
-                />
-                <form onSubmit={handleSubmit(simpan)}>
-                    <div className="mb-3">
-                        <label htmlFor="gambar" className="form-label">gambar</label>
-                        <input type="file" className="form-control" id="gambar" {...register("gambar", { required: true })} />
+                    <div className="card-body text-center">
+                        <h5 className="card-title">{specSurah.name_simple} ({specSurah.verses_count}) : {nomor}</h5>
+                        <p>
+                            {ayat.words?.map((value, index) => (
+                                <span key={index}>{value.text_uthmani} </span>
+                            ))}
+                        </p>
+                        <hr />
+                        <p className="card-text">
+                            {ayat.translations?.map((value, index) => (
+                                <span key={index}>{value.text} </span>
+                            ))}
+                        </p>
+                        <p className="card-text fst-italic">(Juz {ayat.juz_number})</p>
                     </div>
-                    <div className="mb-3">
-                        <input type="submit" className="btn btn-primary" />
-                    </div>
-                </form>
-                {
-                    gambar !== undefined ? <img src={gambar} alt="" /> : ''
-                }
-                <input onClick={() => hapus()} className="btn btn-danger" type="submit" value="HAPUS" />
+                </div>
             </div>
         </div>
     )

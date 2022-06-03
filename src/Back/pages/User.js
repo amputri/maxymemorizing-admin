@@ -12,7 +12,7 @@ const User = () => {
     let nomor = 1
 
     useEffect(() => {
-        getIsi() 
+        getIsi()
     }, [refresh])
 
     async function getIsi() {
@@ -79,12 +79,9 @@ const User = () => {
     }
 
     return (
-        <div>
-            <div className="row">
-                <p>{pesan}</p>
-            </div>
-            <div className="accordion" id="accordionExample">
-                <div className="accordion-item">
+        <div className='container'>
+            <div className="accordion mb-4" id="accordionExample">
+                <div className="accordion-item mb-4">
                     <h2 className="accordion-header" id="headingOne">
                         <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             Input Data User
@@ -92,22 +89,26 @@ const User = () => {
                     </h2>
                     <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                         <div className="accordion-body">
+                            {
+                                pesan !== '' ? <div className='bg-info p-2 text-white rounded shadow text-center mb-4'>{pesan}</div> : ''
+                            }
                             <form onSubmit={handleSubmit(simpan)}>
                                 <div className="mb-3">
-                                    <label htmlFor="nama" className="form-label">nama</label>
+                                    <label htmlFor="nama" className="form-label">Nama</label>
                                     <input type="text" className="form-control" id="nama" {...register("nama", { required: true })} />
                                     {errors.nama && <span>nama harus diisi</span>}
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="username" className="form-label">username</label>
+                                    <label htmlFor="username" className="form-label">Username</label>
                                     <input type="text" className="form-control" id="username" {...register("username", { required: true })} />
+                                </div><div className="mb-3">
                                     <label htmlFor="level">Level</label>
                                     <select className="form-control" name="level" id="level" {...register("level", { required: true })}>
                                         <option value="1">Administrator</option>
                                         <option value="2">Moderator</option>
                                     </select>
                                 </div>
-                                <div className="mb-3">
+                                <div className="mb-3 d-grid">
                                     <input type="submit" className="btn btn-primary" />
                                 </div>
                             </form>
@@ -117,11 +118,8 @@ const User = () => {
             </div>
             <div className="row">
                 <div>
-                    <h2>Menu User</h2>
-                </div>
-            </div>
-            <div className="row">
-                <div>
+                    <h5 className="card-title">Data User</h5>
+                    <hr />
                     <MDBDataTable
                         borderless
                         small
@@ -137,12 +135,12 @@ const User = () => {
                             ],
                             rows: isi.map((val) => ({
                                 nomor: nomor++,
-                                nama: val.nama+val.create_by+val.update_by,
+                                nama: val.nama,
                                 username: val.username,
-                                level: val.level === 1 ? <input onClick={() => ubahLevel(val.id, 2)} className="btn btn-success" type="submit" value="ADMINISTRATOR" /> : <input onClick={() => ubahLevel(val.id, 1)} className="btn btn-danger" type="submit" value="MODERATOR" />,
-                                status: val.status === 1 ? <input onClick={() => ubahStatus(val.id, 0)} className="btn btn-success" type="submit" value="AKTIF" /> : <input onClick={() => ubahStatus(val.id, 1)} className="btn btn-danger" type="submit" value="BANNED" />,
-                                resetPassword: <input onClick={() => resetPassword(val.id)} className="btn btn-warning" type="submit" value="RESET" />,
-                                hapus: <input onClick={() => hapus(val.id)} className="btn btn-danger" type="submit" value="HAPUS" />
+                                level: val.level === 1 ? <span onClick={() => ubahLevel(val.id, 2)} className="text-small bg-primary text-white rounded px-2 py-1">administrator</span> : <span onClick={() => ubahLevel(val.id, 1)} className="text-small bg-info text-white rounded px-2 py-1">moderator</span>,
+                                status: val.status === 1 ? <span onClick={() => ubahStatus(val.id, 0)} className="text-small bg-success text-white rounded px-2 py-1">aktif</span> : <span onClick={() => ubahStatus(val.id, 1)} className="text-small bg-danger text-white rounded px-2 py-1">banned</span>,
+                                resetPassword: <i onClick={() => resetPassword(val.id)} className="fa fa-recycle text-warning" />,
+                                hapus: <i onClick={() => hapus(val.id)} className="fa fa-trash text-danger" />
                             }))
                         }}
                     />

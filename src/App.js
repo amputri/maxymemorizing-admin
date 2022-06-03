@@ -11,7 +11,7 @@ import Login from './Back/Login'
 
 function App() {
 	return (
-		<div className="container">
+		<div>
 			<Router>
 				<Route path="/" component={Front} exact />
 				<Route path="/admin" component={Back} />

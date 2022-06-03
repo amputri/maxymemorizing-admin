@@ -32,18 +32,24 @@ const Login = () => {
         <div>
             <div className="row mt-5">
                 <div className="mx-auto col-4">
-                    <form onSubmit={handleSubmit(login)}>
-                        <div className="form-group">
-                            <label htmlFor="username">Username</label>
-                            <input type="text" className="form-control" name="username" {...register("username", { required: true })} />
+                    <div className="card">
+                        <img src={process.env.PUBLIC_URL + '/logo.png'} className="img-fluid mx-auto" alt="" width="70%" />
+                        <div className="card-body">
+                            <form onSubmit={handleSubmit(login)}>
+                                <div className="form-floating mb-3">
+                                    <input type="text" className="form-control" id='username' placeholder='Username' name="username" {...register("username", { required: true })} />
+                                    <label htmlFor="username">Username</label>
+                                </div>
+                                <div className="form-floating mb-3">
+                                    <input type="password" className="form-control" id='password' placeholder='Password' name="password" {...register("password", { required: true })} />
+                                    <label htmlFor="password">Password</label>
+                                </div>
+                                <div className="d-grid">
+                                    <button type="submit" className="btn btn-primary">Login</button>
+                                </div>
+                            </form>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <input type="password" className="form-control" name="password" {...register("password", { required: true })} />
-                        </div>
-                        <button type="submit" className="btn btn-primary">Login</button>
-                    </form>
-
+                    </div>
                 </div>
             </div>
         </div>

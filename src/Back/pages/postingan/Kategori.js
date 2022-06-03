@@ -62,54 +62,74 @@ const Kategori = () => {
     }
 
     return (
-        <div>
-            <div className="row">{pesan}</div>
-            <div className="row">
-                <Select
-                    onChange={getKategori.bind(this)}
-                    options={pokokOptions}
-                    defaultValue={pokokOptions[0]}
-                />
-                <form onSubmit={handleSubmit(simpan)}>
-                    <div className="mb-3">
-                        <label htmlFor="urutan" className="form-label">urutan</label>
-                        <input type="number" className="form-control" id="urutan" {...register("urutan", { required: true })} />
+        <div className='container'>
+            <div className="row mx-auto mt-2 mb-4">
+                <div className="accordion mb-4" id="accordionExample">
+                    <div className="accordion-item">
+                        <h2 className="accordion-header" id="headingOne">
+                            <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Input Kategori Postingan
+                            </button>
+                        </h2>
+                        <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div className="accordion-body">
+                                {
+                                    pesan !== '' ? <div className='bg-info p-2 text-white rounded shadow text-center mb-4'>{pesan}</div> : ''
+                                }
+                                <label className="form-label mb-3">Pokok Materi</label>
+                                <Select
+                                    onChange={getKategori.bind(this)}
+                                    options={pokokOptions}
+                                    defaultValue={pokokOptions[0]}
+                                />
+                                <form onSubmit={handleSubmit(simpan)}>
+                                    <div className="my-3">
+                                        <label htmlFor="urutan" className="form-label">urutan</label>
+                                        <input type="number" className="form-control" id="urutan" {...register("urutan", { required: true })} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="kategori" className="form-label">kategori</label>
+                                        <input type="text" className="form-control" id="kategori" {...register("kategori", { required: true })} />
+                                    </div>
+                                    <div className="d-grid">
+                                        <input type="submit" className="btn btn-primary" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="kategori" className="form-label">kategori</label>
-                        <input type="text" className="form-control" id="kategori" {...register("kategori", { required: true })} />
-                    </div>
-                    <div className="mb-3">
-                        <input type="submit" className="btn btn-primary" />
-                    </div>
-                </form>
-                <MDBDataTable
-                    borderless
-                    small
-                    data={{
-                        columns: [
-                            { label: 'Nomor', field: 'nomor' },
-                            { label: 'Kategori', field: 'kategori' },
-                            { label: 'Editor', field: 'editor' },
-                            { label: 'Tanggal', field: 'tanggal' },
-                            { label: 'Ubah', field: 'ubah' },
-                            { label: 'Hapus', field: 'hapus' },
-                            { label: 'Tema', field: 'tema' }
-                        ],
-                        rows: kategori.map((val) => ({
-                            nomor: val.urutan,
-                            kategori: val.kategori,
-                            editor: val.update_by,
-                            tanggal: val.update_at,
-                            ubah: <input onClick={() => showData(val)} className="btn btn-success" type="submit" value="Ubah" />,
-                            hapus: <input onClick={() => hapus(val.id)} className="btn btn-danger" type="submit" value="Hapus" />,
-                            tema: <Link to={{
-                                        pathname: "/admin/tema",
-                                        state: { pokok: pokok, idKategori: val.id }
-                                    }} replace className="btn btn-info">Detail</Link>
-                        }))
-                    }}
-                />
+                </div>
+                <div>
+                    <h5 className="card-title">Data Kategori Postingan</h5>
+                    <hr />
+                    <MDBDataTable
+                        borderless
+                        small
+                        data={{
+                            columns: [
+                                { label: 'Nomor', field: 'nomor' },
+                                { label: 'Kategori', field: 'kategori' },
+                                { label: 'Editor', field: 'editor' },
+                                { label: 'Tanggal', field: 'tanggal' },
+                                { label: 'Ubah', field: 'ubah' },
+                                { label: 'Hapus', field: 'hapus' },
+                                { label: 'Tema', field: 'tema' }
+                            ],
+                            rows: kategori.map((val) => ({
+                                nomor: val.urutan,
+                                kategori: val.kategori,
+                                editor: val.update_by,
+                                tanggal: val.update_at,
+                                ubah: <i onClick={() => showData(val)} className="fa fa-edit text-warning" />,
+                                hapus: <i onClick={() => hapus(val.id)} className="fa fa-trash text-danger" />,
+                                tema: <Link to={{
+                                    pathname: "/admin/tema",
+                                    state: { pokok: pokok, idKategori: val.id }
+                                }} replace><i className="fa fa-search text-success" /></Link>
+                            }))
+                        }}
+                    />
+                </div>
             </div>
         </div>
     )
