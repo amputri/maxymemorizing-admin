@@ -19,7 +19,7 @@ const Front = () => {
                     <p className="card-text">Aplikasi mobile yang membantu memperkuat hafalan Al-Qur'an melalui visualisasi gambar dan pemetaan, dengan beberapa fitur:</p>
                 </div>
                 <ul className="list-group list-group-flush">
-                    <li className="list-group-item">Fitur Baca Al-Qur'an</li>
+                    <li className="list-group-item">Fitur Baca Al-Qur'an.</li>
                     <li className="list-group-item">Fitur Al-Qur'an Card</li>
                     <li className="list-group-item">Fitur Tes Hafalan</li>
                     <li className="list-group-item">Fitur Pendalaman Ayat dalam Al-Qur'an</li>
