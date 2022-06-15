@@ -49,7 +49,7 @@ const Surah = () => {
         console.log('visual')
     }
 
-    async function simpan(data) {
+    function simpan(data) {
         if (data.gambar[0]) {
             const formData = new FormData()
             formData.append('gambar', data.gambar[0])
@@ -67,10 +67,10 @@ const Surah = () => {
                     }
 
                     if (gambar === undefined) {
-                        const res = await link.post('/surah', dataSurah)
+                        const res = link.post('/surah', dataSurah)
                         setPesan(res.data.message)
                     } else {
-                        const res = await link.put('/surah/', dataSurah)
+                        const res = link.put('/surah/', dataSurah)
                         setPesan(res.data.message)
                     }
                 })
@@ -84,7 +84,7 @@ const Surah = () => {
                 id_session: sessionStorage.getItem('id')
             }
 
-            const res = await link.put('/surah/', dataSurah)
+            const res = link.put('/surah/', dataSurah)
             setPesan(res.data.message)
         }
 

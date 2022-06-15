@@ -49,7 +49,7 @@ const Tema = () => {
         setIdKategori(e.value)
     }
 
-    async function simpan(data) {
+    function simpan(data) {
         if (data.gambar[0]) {
             const formData = new FormData()
             formData.append('gambar', data.gambar[0])
@@ -68,10 +68,10 @@ const Tema = () => {
                     }
 
                     if (gambar === '') {
-                        const res = await link.post('/tema', dataTema)
+                        const res = link.post('/tema', dataTema)
                         setPesan(res.data.message)
                     } else {
-                        const res = await link.put('/tema', dataTema)
+                        const res = link.put('/tema', dataTema)
                         setPesan(res.data.message)
                     }
                 })
@@ -86,7 +86,7 @@ const Tema = () => {
                 id_session: sessionStorage.getItem('id')
             }
 
-            const res = await link.put('/tema', dataTema)
+            const res =  link.put('/tema', dataTema)
             setPesan(res.data.message)
         }
 
