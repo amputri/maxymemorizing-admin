@@ -50,11 +50,11 @@ const Surah = () => {
         console.log('visual')
     }
 
-    function simpan(data) {
+    async function simpan(data) {
         if (data.gambar[0]) {
             const formData = new FormData()
             formData.append('gambar', data.gambar[0])
-            axios.post("https://sihaq.com/maxymemorizing/surah/upload.php", formData, {
+            await axios.post("https://sihaq.com/maxymemorizing/surah/upload.php", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             })
                 .then(response => {
@@ -68,10 +68,10 @@ const Surah = () => {
                     }
 
                     if (gambar === undefined) {
-                        const res = link.post('/surah', dataSurah)
+                        const res = await link.post('/surah', dataSurah)
                         setPesan(res.data.message)
                     } else {
-                        const res = link.put('/surah/', dataSurah)
+                        const res = await link.put('/surah/', dataSurah)
                         setPesan(res.data.message)
                     }
                 })
@@ -85,7 +85,7 @@ const Surah = () => {
                 id_session: sessionStorage.getItem('id')
             }
 
-            const res = link.put('/surah/', dataSurah)
+            const res = await link.put('/surah/', dataSurah)
             setPesan(res.data.message)
         }
 

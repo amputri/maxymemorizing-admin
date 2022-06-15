@@ -48,10 +48,10 @@ const Ayat = () => {
         console.log('visual')
     }
 
-    function simpan(data) {
+    async function simpan(data) {
         const formData = new FormData()
         formData.append('gambar', data.gambar[0])
-        axios.post("https://sihaq.com/maxymemorizing/ayat/upload.php", formData, {
+        await axios.post("https://sihaq.com/maxymemorizing/ayat/upload.php", formData, {
             headers: { "Content-Type": "multipart/form-data" }
         })
             .then(response => {
@@ -62,10 +62,10 @@ const Ayat = () => {
                 }
 
                 if (gambar === undefined) {
-                    const res = link.post('/ayat', dataAyat)
+                    const res = await link.post('/ayat', dataAyat)
                     setPesan(res.data.message)
                 } else {
-                    const res = link.put(`/ayat`, dataAyat)
+                    const res = await link.put(`/ayat`, dataAyat)
                     setPesan(res.data.message)
                 }
             })
