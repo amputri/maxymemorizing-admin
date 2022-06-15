@@ -50,11 +50,11 @@ const Tema = () => {
         setIdKategori(e.value)
     }
 
-    async function simpan(data) {
+    function simpan(data) {
         if (data.gambar[0]) {
             const formData = new FormData()
             formData.append('gambar', data.gambar[0])
-            await axios.post("https://sihaq.com/maxymemorizing/tema/upload.php", formData, {
+            axios.post("https://sihaq.com/maxymemorizing/tema/upload.php", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             })
                 .then(response => {
@@ -87,7 +87,7 @@ const Tema = () => {
                 id_session: sessionStorage.getItem('id')
             }
 
-            const res =  await link.put('/tema', dataTema)
+            const res =  link.put('/tema', dataTema)
             setPesan(res.data.message)
         }
 
@@ -95,6 +95,7 @@ const Tema = () => {
         setDataReferensi('')
         setGambar('')
         setRefresh(Math.random)
+        fetchTema()
     }
 
     function showData(data) {

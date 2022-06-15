@@ -48,10 +48,10 @@ const Ayat = () => {
         console.log('visual')
     }
 
-    async function simpan(data) {
+    function simpan(data) {
         const formData = new FormData()
         formData.append('gambar', data.gambar[0])
-        await axios.post("https://sihaq.com/maxymemorizing/ayat/upload.php", formData, {
+        axios.post("https://sihaq.com/maxymemorizing/ayat/upload.php", formData, {
             headers: { "Content-Type": "multipart/form-data" }
         })
             .then(response => {
@@ -72,6 +72,7 @@ const Ayat = () => {
 
         setRefresh(Math.random)
         reset()
+        getVisual()
     }
 
     function getVisualSurah(e) {
