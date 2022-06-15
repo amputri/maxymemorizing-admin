@@ -74,11 +74,6 @@ const Surah = () => {
                         const res = link.put('/surah/', dataSurah)
                         setPesan(res.data.message)
                     }
-
-                    reset()
-                    setDataNarasi('')
-                    setDataUraian('')
-                    setRefresh(Math.random)
                 })
         } else {
             let dataSurah = {
@@ -92,12 +87,12 @@ const Surah = () => {
 
             const res = link.put('/surah/', dataSurah)
             setPesan(res.data.message)
-
-            reset()
-            setDataNarasi('')
-            setDataUraian('')
-            setRefresh(Math.random)
         }
+
+        reset()
+        setDataNarasi('')
+        setDataUraian('')
+        setRefresh(Math.random)
     }
 
     function getVisualSurah(e) {

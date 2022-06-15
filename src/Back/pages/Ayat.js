@@ -48,30 +48,28 @@ const Ayat = () => {
         console.log('visual')
     }
 
-    function simpan(data) {
+    async function simpan(data) {
         const formData = new FormData()
         formData.append('gambar', data.gambar[0])
-        axios.post("https://sihaq.com/maxymemorizing/ayat/upload.php", formData, {
+        const firstRespon = await axios.post("https://sihaq.com/maxymemorizing/ayat/upload.php", formData, {
             headers: { "Content-Type": "multipart/form-data" }
         })
-            .then(response => {
-                let dataAyat = {
-                    id: `${id}:${nomor}`,
-                    gambar: response.data.nama,
-                    id_session: sessionStorage.getItem('id')
-                }
+        let dataAyat = {
+            id: `${id}:${nomor}`,
+            gambar: firstRespon.data.nama,
+            id_session: sessionStorage.getItem('id')
+        }
 
-                if (gambar === undefined) {
-                    const res = link.post('/ayat', dataAyat)
-                    setPesan(res.data.message)
-                } else {
-                    const res = link.put(`/ayat`, dataAyat)
-                    setPesan(res.data.message)
-                }
+        if (gambar === undefined) {
+            const res = await link.post('/ayat', dataAyat)
+            setPesan(res.data.message)
+        } else {
+            const res = await link.put(`/ayat`, dataAyat)
+            setPesan(res.data.message)
+        }
 
-                reset()
-                setRefresh(Math.random)
-            })
+        reset()
+        setRefresh(Math.random)
     }
 
     function getVisualSurah(e) {
