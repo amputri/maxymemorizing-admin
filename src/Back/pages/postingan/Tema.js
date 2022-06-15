@@ -6,6 +6,7 @@ import Select from 'react-select'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { Link, useLocation } from 'react-router-dom'
+import axios from 'axios'
 
 const Tema = () => {
     const location = useLocation()

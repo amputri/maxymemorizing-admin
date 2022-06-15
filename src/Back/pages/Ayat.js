@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { link, globalLink, language, wordFields, translations } from '../../Axios/link'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
+import axios from 'axios'
 
 const Ayat = () => {
     const [surah, setSurah] = useState([])
