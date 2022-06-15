@@ -70,7 +70,7 @@ const Surah = () => {
                 const res = await link.post('/surah', dataSurah)
                 setPesan(res.data.message)
             } else {
-                const res = await link.put('/surah/', dataSurah)
+                const res = await link.put('/surah', dataSurah)
                 setPesan(res.data.message)
             }
         } else {
@@ -83,7 +83,7 @@ const Surah = () => {
                 id_session: sessionStorage.getItem('id')
             }
 
-            const res = await link.put('/surah/', dataSurah)
+            const res = await link.put('/surah', dataSurah)
             setPesan(res.data.message)
         }
 
