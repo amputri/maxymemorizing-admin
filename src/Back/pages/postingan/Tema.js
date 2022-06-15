@@ -50,32 +50,30 @@ const Tema = () => {
         setIdKategori(e.value)
     }
 
-    function simpan(data) {
+    async function simpan(data) {
         if (data.gambar[0]) {
             const formData = new FormData()
             formData.append('gambar', data.gambar[0])
-            axios.post("https://sihaq.com/maxymemorizing/tema/upload.php", formData, {
+            const firstRespon = await axios.post("https://sihaq.com/maxymemorizing/tema/upload.php", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             })
-                .then(response => {
-                    let dataTema = {
-                        id: idTema,
-                        kategori: idKategori,
-                        urutan: data.urutan,
-                        judul: data.judul,
-                        referensi: dataReferensi,
-                        gambar: response.data.nama,
-                        id_session: sessionStorage.getItem('id')
-                    }
+            let dataTema = {
+                id: idTema,
+                kategori: idKategori,
+                urutan: data.urutan,
+                judul: data.judul,
+                referensi: dataReferensi,
+                gambar: firstRespon.data.nama,
+                id_session: sessionStorage.getItem('id')
+            }
 
-                    if (gambar === '') {
-                        const res = link.post('/tema', dataTema)
-                        setPesan(res.data.message)
-                    } else {
-                        const res = link.put('/tema', dataTema)
-                        setPesan(res.data.message)
-                    }
-                })
+            if (gambar === '') {
+                const res = await link.post('/tema', dataTema)
+                setPesan(res.data.message)
+            } else {
+                const res = await link.put('/tema', dataTema)
+                setPesan(res.data.message)
+            }
         } else {
             let dataTema = {
                 id: idTema,
@@ -87,7 +85,7 @@ const Tema = () => {
                 id_session: sessionStorage.getItem('id')
             }
 
-            const res =  link.put('/tema', dataTema)
+            const res = await link.put('/tema', dataTema)
             setPesan(res.data.message)
         }
 

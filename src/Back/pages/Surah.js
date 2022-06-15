@@ -50,31 +50,29 @@ const Surah = () => {
         console.log('visual')
     }
 
-    function simpan(data) {
+    async function simpan(data) {
         if (data.gambar[0]) {
             const formData = new FormData()
             formData.append('gambar', data.gambar[0])
-            axios.post("https://sihaq.com/maxymemorizing/surah/upload.php", formData, {
+            const firstRespon = await axios.post("https://sihaq.com/maxymemorizing/surah/upload.php", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             })
-                .then(response => {
-                    let dataSurah = {
-                        id: id,
-                        kata_kunci: data.kata_kunci,
-                        narasi: dataNarasi,
-                        uraian: dataUraian,
-                        gambar: response.data.nama,
-                        id_session: sessionStorage.getItem('id')
-                    }
+            let dataSurah = {
+                id: id,
+                kata_kunci: data.kata_kunci,
+                narasi: dataNarasi,
+                uraian: dataUraian,
+                gambar: firstRespon.data.nama,
+                id_session: sessionStorage.getItem('id')
+            }
 
-                    if (gambar === undefined) {
-                        const res = link.post('/surah', dataSurah)
-                        setPesan(res.data.message)
-                    } else {
-                        const res = link.put('/surah/', dataSurah)
-                        setPesan(res.data.message)
-                    }
-                })
+            if (gambar === undefined) {
+                const res = await link.post('/surah', dataSurah)
+                setPesan(res.data.message)
+            } else {
+                const res = await link.put('/surah/', dataSurah)
+                setPesan(res.data.message)
+            }
         } else {
             let dataSurah = {
                 id: id,
@@ -85,7 +83,7 @@ const Surah = () => {
                 id_session: sessionStorage.getItem('id')
             }
 
-            const res = link.put('/surah/', dataSurah)
+            const res = await link.put('/surah/', dataSurah)
             setPesan(res.data.message)
         }
 
