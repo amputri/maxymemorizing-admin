@@ -68,11 +68,10 @@ const Ayat = () => {
                     const res = link.put(`/ayat`, dataAyat)
                     setPesan(res.data.message)
                 }
+
+                reset()
+                setRefresh(Math.random)
             })
-        
-        reset()
-        setRefresh(Math.random)
-        getVisual()
     }
 
     function getVisualSurah(e) {

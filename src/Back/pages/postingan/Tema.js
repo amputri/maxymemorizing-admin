@@ -75,6 +75,11 @@ const Tema = () => {
                         const res = link.put('/tema', dataTema)
                         setPesan(res.data.message)
                     }
+
+                    reset()
+                    setDataReferensi('')
+                    setGambar('')
+                    setRefresh(Math.random)
                 })
         } else {
             let dataTema = {
@@ -87,15 +92,14 @@ const Tema = () => {
                 id_session: sessionStorage.getItem('id')
             }
 
-            const res =  link.put('/tema', dataTema)
+            const res = link.put('/tema', dataTema)
             setPesan(res.data.message)
-        }
 
-        reset()
-        setDataReferensi('')
-        setGambar('')
-        setRefresh(Math.random)
-        fetchTema()
+            reset()
+            setDataReferensi('')
+            setGambar('')
+            setRefresh(Math.random)
+        }
     }
 
     function showData(data) {
