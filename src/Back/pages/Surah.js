@@ -68,10 +68,10 @@ const Surah = () => {
                     }
 
                     if (gambar === undefined) {
-                        const res = await link.post('/surah', dataSurah)
+                        const res = link.post('/surah', dataSurah)
                         setPesan(res.data.message)
                     } else {
-                        const res = await link.put('/surah/', dataSurah)
+                        const res = link.put('/surah/', dataSurah)
                         setPesan(res.data.message)
                     }
                 })

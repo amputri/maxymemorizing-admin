@@ -62,10 +62,10 @@ const Ayat = () => {
                 }
 
                 if (gambar === undefined) {
-                    const res = await link.post('/ayat', dataAyat)
+                    const res = link.post('/ayat', dataAyat)
                     setPesan(res.data.message)
                 } else {
-                    const res = await link.put(`/ayat`, dataAyat)
+                    const res = link.put(`/ayat`, dataAyat)
                     setPesan(res.data.message)
                 }
             })

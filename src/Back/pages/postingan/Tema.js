@@ -69,10 +69,10 @@ const Tema = () => {
                     }
 
                     if (gambar === '') {
-                        const res = await link.post('/tema', dataTema)
+                        const res = link.post('/tema', dataTema)
                         setPesan(res.data.message)
                     } else {
-                        const res = await link.put('/tema', dataTema)
+                        const res = link.put('/tema', dataTema)
                         setPesan(res.data.message)
                     }
                 })
