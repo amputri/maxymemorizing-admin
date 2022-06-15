@@ -50,20 +50,43 @@ const Tema = () => {
     }
 
     async function simpan(data) {
-        const formData = new FormData()
-        formData.append('kategori', idKategori)
-        formData.append('urutan', data.urutan)
-        formData.append('judul', data.judul)
-        formData.append('gambar', data.gambar[0])
-        formData.append('gambar_tema', gambar)
-        formData.append('referensi', dataReferensi)
-        formData.append('id_session', sessionStorage.getItem('id'))
+        if (data.gambar[0]) {
+            const formData = new FormData()
+            formData.append('gambar', data.gambar[0])
+            axios.post("https://sihaq.com/maxymemorizing/tema/upload.php", formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            })
+                .then(response => {
+                    let dataTema = {
+                        id: idTema,
+                        kategori: idKategori,
+                        urutan: data.urutan,
+                        judul: data.judul,
+                        referensi: dataReferensi,
+                        gambar: response.data.nama,
+                        id_session: sessionStorage.getItem('id')
+                    }
 
-        if (gambar === '') {
-            const res = await link.post('/tema', formData)
-            setPesan(res.data.message)
+                    if (gambar === '') {
+                        const res = await link.post('/tema', dataTema)
+                        setPesan(res.data.message)
+                    } else {
+                        const res = await link.put('/tema', dataTema)
+                        setPesan(res.data.message)
+                    }
+                })
         } else {
-            const res = await link.post('/tema/' + idTema, formData)
+            let dataTema = {
+                id: idTema,
+                kategori: idKategori,
+                urutan: data.urutan,
+                judul: data.judul,
+                referensi: dataReferensi,
+                gambar: gambar,
+                id_session: sessionStorage.getItem('id')
+            }
+
+            const res = await link.put('/tema', dataTema)
             setPesan(res.data.message)
         }
 
@@ -83,7 +106,7 @@ const Tema = () => {
 
     async function hapus(id) {
         if (window.confirm('yakin akan menghapus?')) {
-            const res = await link.delete('/tema/' + id + '/' + gambar.split('/tema/').pop())
+            const res = await link.delete('/tema/' + id)
             setPesan(res.data.pesan)
             reset()
             setDataReferensi('')

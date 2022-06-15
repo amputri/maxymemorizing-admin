@@ -49,18 +49,26 @@ const Ayat = () => {
 
     async function simpan(data) {
         const formData = new FormData()
-        formData.append('id', `${id}:${nomor}`)
         formData.append('gambar', data.gambar[0])
-        formData.append('gambar_lama', gambar)
-        formData.append('id_session', sessionStorage.getItem('id'))
+        axios.post("https://sihaq.com/maxymemorizing/ayat/upload.php", formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+        })
+            .then(response => {
+                let dataAyat = {
+                    id: `${id}:${nomor}`,
+                    gambar: response.data.nama,
+                    id_session: sessionStorage.getItem('id')
+                }
 
-        if (gambar === undefined) {
-            const res = await link.post('/ayat', formData)
-            setPesan(res.data.message)
-        } else {
-            const res = await link.post(`/ayat/${id}:${nomor}`, formData)
-            setPesan(res.data.message)
-        }
+                if (gambar === undefined) {
+                    const res = await link.post('/ayat', dataAyat)
+                    setPesan(res.data.message)
+                } else {
+                    const res = await link.put(`/ayat`, dataAyat)
+                    setPesan(res.data.message)
+                }
+            })
+
         setRefresh(Math.random)
         reset()
     }
@@ -80,7 +88,7 @@ const Ayat = () => {
 
     async function hapus() {
         if (window.confirm('yakin akan menghapus?')) {
-            const res = await link.delete(`/ayat/${id}:${nomor}/${gambar.split('/ayat/').pop()}`)
+            const res = await link.delete(`/ayat/${id}:${nomor}`)
             setPesan(res.data.pesan)
             setRefresh(Math.random)
         }

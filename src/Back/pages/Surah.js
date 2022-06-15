@@ -50,22 +50,44 @@ const Surah = () => {
     }
 
     async function simpan(data) {
-        const formData = new FormData()
-        formData.append('id', id)
-        formData.append('kata_kunci', data.kata_kunci)
-        formData.append('narasi', dataNarasi)
-        formData.append('uraian', dataUraian)
-        formData.append('gambar', data.gambar[0])
-        formData.append('gambar_surah', gambar)
-        formData.append('id_session', sessionStorage.getItem('id'))
+        if (data.gambar[0]) {
+            const formData = new FormData()
+            formData.append('gambar', data.gambar[0])
+            axios.post("https://sihaq.com/maxymemorizing/surah/upload.php", formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            })
+                .then(response => {
+                    let dataSurah = {
+                        id: id,
+                        kata_kunci: data.kata_kunci,
+                        narasi: dataNarasi,
+                        uraian: dataUraian,
+                        gambar: response.data.nama,
+                        id_session: sessionStorage.getItem('id')
+                    }
 
-        if (gambar === undefined) {
-            const res = await link.post('/surah', formData)
-            setPesan(res.data.message)
+                    if (gambar === undefined) {
+                        const res = await link.post('/surah', dataSurah)
+                        setPesan(res.data.message)
+                    } else {
+                        const res = await link.put('/surah/', dataSurah)
+                        setPesan(res.data.message)
+                    }
+                })
         } else {
-            const res = await link.post('/surah/' + id, formData)
+            let dataSurah = {
+                id: id,
+                kata_kunci: data.kata_kunci,
+                narasi: dataNarasi,
+                uraian: dataUraian,
+                gambar: gambar,
+                id_session: sessionStorage.getItem('id')
+            }
+
+            const res = await link.put('/surah/', dataSurah)
             setPesan(res.data.message)
         }
+
         reset()
         setDataNarasi('')
         setDataUraian('')
@@ -79,7 +101,7 @@ const Surah = () => {
 
     async function hapus() {
         if (window.confirm('yakin akan menghapus?')) {
-            const res = await link.delete('/surah/' + id + '/' + gambar.split('/surah/').pop())
+            const res = await link.delete('/surah/' + id)
             setPesan(res.data.pesan)
             setRefresh(Math.random)
         }
