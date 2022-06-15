@@ -69,9 +69,9 @@ const Ayat = () => {
                     setPesan(res.data.message)
                 }
             })
-
-        setRefresh(Math.random)
+        
         reset()
+        setRefresh(Math.random)
         getVisual()
     }
 
